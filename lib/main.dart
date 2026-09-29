@@ -128,95 +128,283 @@
 //     );
 //   }
 // }
+// import 'package:flutter/material.dart';
+// import 'package:go_router/go_router.dart';
+
+// void main() {
+//   runApp(MyApp());
+// }
+
+// // تنظیمات آدرس صفحات (بسیار ساده)
+// final _router = GoRouter(
+//   initialLocation: '/',
+//   routes: [
+//     // صفحه اول
+//     GoRoute(
+//       path: '/',
+//       builder: (context, state) => HomeScreen(),
+//     ),
+//     // صفحه دوم (name: آخر آدرس یعنی اینجا نام را تحویل می‌گیریم)
+//     GoRoute(
+//       path: '/details/:name',
+//       builder: (context, state) {
+//         // نام را از آدرس بیرون می‌کشیم
+//         String userSelectedName = state.pathParameters['name']!;
+//         // نام را به صفحه دوم می‌فرستیم
+//         return DetailsScreen(userSelectedName);
+//       },
+//     ),
+//   ],
+// );
+
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp.router(
+//       routerConfig: _router, // معرفی به برنامه
+//     );
+//   }
+// }
+
+// // --- صفحه اول ---
+// class HomeScreen extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text('صفحه اول')),
+//       body: Center(
+//         child: ElevatedButton(
+//           child: Text('فرستادن نام "احمد" به صفحه بعد'),
+//           onPressed: () {
+//             // رفتن به صفحه بعد و گذاشتن نام احمد در آدرس
+//             context.go('/details/Ahmad');
+//           },
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// // --- صفحه دوم ---
+// class DetailsScreen extends StatelessWidget {
+//   // یک متغیر ساده برای ذخیره نام
+//   final String incomingName;
+
+//   // سازنده (Constructor) بسیار ساده بدون کلمات پیچیده
+//   DetailsScreen(this.incomingName);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text('صفحه دوم')),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             // نشان دادن نامی که از صفحه قبل آمده
+//             Text(
+//               'نام فرستاده شده: $incomingName',
+//               style: TextStyle(fontSize: 24),
+//             ),
+//             SizedBox(height: 20),
+//             ElevatedButton(
+//               child: Text('برگشت'),
+//               onPressed: () {
+//                 context.go('/'); // برگشت به صفحه اول
+//               },
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+
+
+
+// import 'package:flutter/material.dart';
+
+// void main() {
+//   runApp(
+//     MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: TelegramPage(),
+//     ),
+//   );
+// }
+
+// class TelegramPage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Colors.white,
+//       appBar: AppBar(
+//         backgroundColor: const Color(0xFF24A1DE), // رنگ آبی تلگرامی
+//         // leading: const Icon(Icons.arrow_back, color: Colors.white),
+        
+//         // قرار دادن عکس دایره‌ای کوچک در کنار نام و سابتایتل
+//         title: Row(
+//           children: [
+//             const CircleAvatar(
+//               radius: 20,
+//               backgroundImage: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh7D5zNG_11pLhT1YiQDjENSSMfYVOyFf6wrFpTqM2xw&s=10'),
+//             ),
+//             const SizedBox(width: 12), // فاصله بین عکس و متن
+//             Expanded(
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 children: const [
+//                   Text(
+//                     'Fazil Nazari',
+//                     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+//                   ),
+//                   SizedBox(height: 2),
+//                   Text(
+//                     '220k Subscriber',
+//                     style: TextStyle(color: Colors.white70, fontSize: 13),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//       body: ListView(
+//         padding: const EdgeInsets.all(16.0),
+//         children: [
+//           // نمایش عکس بزرگ در بدنه (Body)
+//           Card(
+//             clipBehavior: Clip.antiAlias,
+//             elevation: 2,
+//             shape: RoundedRectangleBorder(
+//               borderRadius: BorderRadius.circular(8),
+//             ),
+//             child: Image.network(
+//               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh7D5zNG_11pLhT1YiQDjENSSMfYVOyFf6wrFpTqM2xw&s=10',
+//               fit: BoxFit.cover,
+//               width: double.infinity,
+//               height: 350,
+//               errorBuilder: (context, error, stackTrace) {
+//                 return const SizedBox(
+//                   height: 350,
+//                   child: Icon(Icons.image_not_supported, size: 50, color: Colors.grey),
+//                 );
+//               },
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: TelegramPage(),
+    ),
+  );
 }
 
-// تنظیمات آدرس صفحات (بسیار ساده)
-final _router = GoRouter(
-  initialLocation: '/',
-  routes: [
-    // صفحه اول
-    GoRoute(
-      path: '/',
-      builder: (context, state) => HomeScreen(),
-    ),
-    // صفحه دوم (name: آخر آدرس یعنی اینجا نام را تحویل می‌گیریم)
-    GoRoute(
-      path: '/details/:name',
-      builder: (context, state) {
-        // نام را از آدرس بیرون می‌کشیم
-        String userSelectedName = state.pathParameters['name']!;
-        // نام را به صفحه دوم می‌فرستیم
-        return DetailsScreen(userSelectedName);
-      },
-    ),
-  ],
-);
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: _router, // معرفی به برنامه
-    );
-  }
-}
-
-// --- صفحه اول ---
-class HomeScreen extends StatelessWidget {
+class TelegramPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('صفحه اول')),
-      body: Center(
-        child: ElevatedButton(
-          child: Text('فرستادن نام "احمد" به صفحه بعد'),
-          onPressed: () {
-            // رفتن به صفحه بعد و گذاشتن نام احمد در آدرس
-            context.go('/details/Ahmad');
-          },
-        ),
-      ),
-    );
-  }
-}
-
-// --- صفحه دوم ---
-class DetailsScreen extends StatelessWidget {
-  // یک متغیر ساده برای ذخیره نام
-  final String incomingName;
-
-  // سازنده (Constructor) بسیار ساده بدون کلمات پیچیده
-  DetailsScreen(this.incomingName);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('صفحه دوم')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      backgroundColor: const Color(0xFFE7EBEE), // رنگ پس‌زمینه چت تلگرام (خاکستری ملایم)
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF24A1DE), 
+       
+        title: Row(
           children: [
-            // نشان دادن نامی که از صفحه قبل آمده
-            Text(
-              'نام فرستاده شده: $incomingName',
-              style: TextStyle(fontSize: 24),
+            const CircleAvatar(
+              radius: 20,
+              backgroundImage: NetworkImage('https://tarna.ir/Media/News/1403/2/fazel-nazari.jpg.webp'),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              child: Text('برگشت'),
-              onPressed: () {
-                context.go('/'); // برگشت به صفحه اول
-              },
+            const SizedBox(width: 12), 
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    'Fazil Nazari',
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    '220k Subscriber',
+                    style: TextStyle(color: Colors.white70, fontSize: 13),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
+      body: ListView(
+        padding: const EdgeInsets.all(12.0),
+        children: [
+          // کارت پست تلگرامی (شامل عکس و شعر)
+          Card(
+            color: Colors.white,
+            clipBehavior: Clip.antiAlias,
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6), // لبه‌های نرم به سبک تلگرام
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // عکس پست
+                Image.network(
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7hTCpDu6V4WZcE4rNCaTFR6b1ZogspP6pU5D6BXOJ0g&s=10',
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: 350,
+                ),
+                
+                // متن شعر (کپشن پست)
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text(
+                        'ناگزیر از سفرم، بی‌سر و سامان چون باد\n'
+                        'به گرفتاری روزان و شبان چون باد\n\n'
+                        'قفس تنگ جهان جا برای من نیست\n'
+                        'ای دریغ از من و از این‌همه باران چون باد',
+                        textDirection: TextDirection.rtl, // راست‌چین برای متن فارسی
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black87,
+                          height: 1.5, // فاصله مناسب بین خطوط شعر
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      
+                      // زمان پست در گوشه سمت راست پایین
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: const [
+                          Text(
+                            '12:30 PM',
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
-
