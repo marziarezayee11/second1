@@ -4,10 +4,10 @@ import 'package:second1/models/book.dart';
 
 void main() {
   runApp(MaterialApp(
-    debugShowCheckedModeBanner: false, // حذف نوار تست برای تمیزی ظاهر
+    debugShowCheckedModeBanner: false,
     theme: ThemeData(
       primarySwatch: Colors.indigo,
-      scaffoldBackgroundColor: const Color(0xFFF8F9FA), // پس‌زمینه لایت و شیک
+      scaffoldBackgroundColor: const Color(0xFFF8F9FA),
     ),
     home: HomePage(),
   ));
@@ -19,6 +19,28 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final List<GlobalKey> keys = [GlobalKey(), GlobalKey(), GlobalKey()];
+  late ScrollController scrollController;
+  BuildContext? tabcontext;
+  @override
+  void initState() {
+    scrollController = ScrollController();
+    scrollController.addListener(animateToTop);
+    super.initState();
+  }
+
+  void animateToTop() {
+    late RenderBox box;
+    for (var i = 0; i < keys.length; i++) {
+      box = keys[i].currentContext!.findRenderObject() as RenderBox;
+      Offset position = box.localToGlobal(Offset.zero);
+      if (scrollController.offset >= position.dy) {
+        DefaultTabController.of(tabcontext!)
+            .animateTo(i, duration: Duration(microseconds: 300));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return (DefaultTabController(
@@ -40,9 +62,8 @@ class _HomePageState extends State<HomePage> {
           leading: Icon(Icons.menu, color: const Color(0xFF2D3142)),
           actions: [
             IconButton(
-              onPressed: () {}, 
-              icon: Icon(Icons.search, color: const Color(0xFF2D3142))
-            )
+                onPressed: () {},
+                icon: Icon(Icons.search, color: const Color(0xFF2D3142)))
           ],
           bottom: TabBar(
               labelColor: const Color.fromARGB(255, 126, 97, 206),
@@ -56,26 +77,32 @@ class _HomePageState extends State<HomePage> {
                 Tab(text: "Science"),
               ]),
         ),
-        body: SingleChildScrollView(
-          physics: BouncingScrollPhysics(), // اسکرول نرم و روان
+        body:Builder(builder: context){
+          tabcontext = context;
+          return
+         SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Column(
             children: [
-              Booktile("Novel", 0),
+              Booktile("Novel", keys[0]),
               BookList(BookREP.novels),
-              Booktile("Hestory", 1),
+              Booktile("Hestory", keys[1]),
               BookList(BookREP.history),
-              Booktile("Science", 2),
+              Booktile("Science", keys[2]),
               BookList(BookREP.science),
-              SizedBox(height: 20), // فاصله خالی پایینی صفحه
+              SizedBox(height: 20),
             ],
           ),
+         
+         );
+        },
         ),
       ),
-    ));
+    );
   }
 }
 
-Widget Booktile(String title, int index) {
+Widget Booktile(String title, GlobalKey key) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -85,12 +112,11 @@ Widget Booktile(String title, int index) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              title, // نمایش داینامیک نام دسته‌بندی شما
+              title,
               style: TextStyle(
-                fontSize: 20, 
-                fontWeight: FontWeight.w800,
-                color: const Color(0xFF2D3142)
-              ),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF2D3142)),
             ),
             TextButton(
                 onPressed: () {},
@@ -100,10 +126,9 @@ Widget Booktile(String title, int index) {
                 child: Text(
                   "See More",
                   style: TextStyle(
-                    color: Colors.indigoAccent, 
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14
-                  ),
+                      color: Colors.indigoAccent,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14),
                 ))
           ],
         )),
@@ -116,38 +141,35 @@ Widget SBookL(Book book) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
     child: Card(
-      elevation: 3, // ایجاد سایه ملایم برای کارت
+      elevation: 3,
       shadowColor: Colors.black12,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)), // حاشیه گرد کارت
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
         height: 160,
         padding: EdgeInsets.all(12),
         child: Row(
           children: [
-            // بخش عکس کتاب با گوشه‌های گرد شده
             Expanded(
-              flex: 2, 
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.network(
-                  book.image, 
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: Colors.grey[300],
-                      child: Icon(Icons.book, color: Colors.grey[600]),
-                    );
-                  },
-                ),
-              )
-            ),
-            SizedBox(width: 14), // فاصله بین عکس و اطلاعات
-            // بخش اطلاعات متنی کتاب
+                flex: 2,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    book.image,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        color: Colors.grey[300],
+                        child: Icon(Icons.book, color: Colors.grey[600]),
+                      );
+                    },
+                  ),
+                )),
+            SizedBox(width: 14),
             Expanded(
               flex: 3,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween, // چیدمان عالی محتوا
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,12 +177,11 @@ Widget SBookL(Book book) {
                       Text(
                         book.name,
                         maxLines: 1,
-                        overflow: TextOverflow.ellipsis, // جلوگیری از خرابی متن‌های بلند
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontSize: 18, 
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFF2D3142)
-                        ),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF2D3142)),
                       ),
                       SizedBox(height: 4),
                       Text(
@@ -168,10 +189,7 @@ Widget SBookL(Book book) {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontSize: 13, 
-                          color: Colors.grey[600],
-                          height: 1.3
-                        ),
+                            fontSize: 13, color: Colors.grey[600], height: 1.3),
                       ),
                     ],
                   ),
@@ -179,12 +197,11 @@ Widget SBookL(Book book) {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "${book.price.toStringAsFixed(0)} AFG", // نمایش تمیز قیمت
+                        "${book.price.toStringAsFixed(0)} AFG",
                         style: TextStyle(
-                          fontSize: 16, 
-                          fontWeight: FontWeight.w600,
-                          color: const Color.fromARGB(255, 126, 97, 206)
-                        ),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: const Color.fromARGB(255, 126, 97, 206)),
                       ),
                       Container(
                         decoration: BoxDecoration(
@@ -192,14 +209,12 @@ Widget SBookL(Book book) {
                           shape: BoxShape.circle,
                         ),
                         child: IconButton(
-                          constraints: BoxConstraints(), // فشرده‌سازی اندازه دکمه
+                          constraints: BoxConstraints(),
                           padding: EdgeInsets.all(6),
                           onPressed: () {},
-                          icon: Icon(
-                            Icons.arrow_forward_ios, // آیکون زیباتر برای ناوبری
-                            size: 14, 
-                            color: const Color.fromARGB(255, 126, 97, 206)
-                          ),
+                          icon: Icon(Icons.arrow_forward_ios,
+                              size: 14,
+                              color: const Color.fromARGB(255, 126, 97, 206)),
                         ),
                       )
                     ],
@@ -215,9 +230,7 @@ Widget SBookL(Book book) {
 }
 
 Widget BookList(List<Book> Books) {
-  return Column(
-    children: [
-      ...Books.map((book) => SBookL(book)).toList(),
-    ]
-  );
+  return Column(children: [
+    ...Books.map((book) => SBookL(book)).toList(),
+  ]);
 }
